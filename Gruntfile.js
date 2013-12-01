@@ -52,7 +52,8 @@ module.exports = function (grunt) {
         options: _jshintCfg(".jshintrc-backend.json"),
         files: {
           src:  [
-            "*.js"
+            "*.js",
+            "examples/**/*.js"
           ]
         }
       }
@@ -111,7 +112,7 @@ module.exports = function (grunt) {
       buf = grunt.file.read("index.js"),
       data = dox.parseComments(buf, { raw: true }),
       start = "## API",
-      end = "## Integration",
+      end = "## Contributions",
       re = new RegExp(start + "(\n|.)*" + end, "m"),
       md = _genApi(data),
       updated = readme.replace(re, start + "\n" + md + end);

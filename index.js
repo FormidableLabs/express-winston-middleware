@@ -118,7 +118,7 @@ Log = function (opts, baseMeta) {
 
   // Meta for all log statements.
   this._meta = _.merge({
-    env: process.env.NODE_ENV,
+    env: process.env.NODE_ENV || "development",
     server: {
       id: serverId,
       pid: process.pid,

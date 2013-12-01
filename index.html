@@ -25,11 +25,81 @@
     <div id="layout" class="pure-g-r">
       <div class="content pure-u-1">
         <div id="main"><h1 id="winston-middleware-for-express">Winston Middleware for Express</h1>
-<p><code>express-winston-middleware</code> provides <a href="https://github.com/flatiron/winston">Winston</a> log wrappers and
-middleware for <a href="http://expressjs.com/">Express</a>.</p>
+<p><a href="https://github.com/flatiron/winston">Winston</a> log wrappers and middleware for <a href="http://expressjs.com/">Express</a>.</p>
 <h2 id="usage">Usage</h2>
 <p>You can install <code>express-winston-middleware</code> using <a href="https://npmjs.org/package/express-winston-middleware">NPM</a>:</p>
 <pre><code>$ npm install express-winston-middleware</code></pre>
+<p>From there, you can create a <code>Log</code> instance or use the <code>request</code> Express
+middleware.</p>
+<h3 id="logger">Logger</h3>
+<p>The <code>Log</code> logger class internally creates and wraps a Winston logger. You
+can create one with:</p>
+<pre><code class="lang-js">var winston = require(&quot;winston&quot;);
+var Log = require(&quot;express-winston-middleware&quot;).Log;
+
+// Create logger with Console transport and &quot;foo&quot; metadata item.
+var log = new Log({
+  transports: [
+    new (winston.transports.Console)({ json: true })
+  ]
+}, {
+  // Metadata to add to each log response.
+  foo: &quot;bar&quot;
+});
+
+// Log something.
+log.info(&quot;Hello World!&quot;);</code></pre>
+<p>which produces the following output:</p>
+<pre><code class="lang-js">{
+  &quot;date&quot;: &quot;2013-12-01T23:29:48.035Z&quot;,
+  &quot;env&quot;: &quot;development&quot;,
+  &quot;server&quot;: {
+    &quot;id&quot;: &quot;m&quot;,
+    &quot;pid&quot;: 24638,
+    &quot;hostName&quot;: &quot;titan.local&quot;
+  },
+  &quot;foo&quot;: &quot;bar&quot;,
+  &quot;level&quot;: &quot;info&quot;,
+  &quot;message&quot;: &quot;Hello World!&quot;
+}</code></pre>
+<h3 id="express-middleware">Express Middleware</h3>
+<p>The <code>request</code> middleware is added to your Express setup like:</p>
+<pre><code class="lang-js">var express = require(&quot;express&quot;);
+var app = express(),
+var requestLogger = require(&quot;express-winston-middleware&quot;).request;
+
+/* ... */
+
+// Same options and meta as for the `Log` class.
+app.use(logging.createMiddle(requestLogger({
+  transports: [
+    new (winston.transports.Console)({ json: true })
+  ]
+}, {
+  // Metadata to add to each log response.
+  foo: &quot;bar&quot;
+})));</code></pre>
+<p>and produces output for requests like:</p>
+<pre><code class="lang-js">{
+  &quot;date&quot;: &quot;2013-12-01T23:32:54.759Z&quot;,
+  &quot;server&quot;: {
+    &quot;id&quot;: &quot;m&quot;,
+    &quot;pid&quot;: 24653,
+    &quot;hostName&quot;: &quot;titan.local&quot;
+  },
+  &quot;req&quot;: {
+    &quot;method&quot;: &quot;GET&quot;,
+    &quot;host&quot;: &quot;localhost:2000&quot;,
+    &quot;path&quot;: &quot;/&quot;,
+    &quot;query&quot;: &quot;&quot;
+  },
+  &quot;res&quot;: {
+    &quot;statusCode&quot;: 304
+  },
+  &quot;foo&quot;: &quot;bar&quot;,
+  &quot;level&quot;: &quot;info&quot;,
+  &quot;message&quot;: &quot;request&quot;
+}</code></pre>
 <h2 id="api">API</h2>
 <ul>
 <li><a href="#-request-object-request-middleware"><code>request(object)</code> - Request middleware</a></li>
@@ -49,8 +119,6 @@ and available as <code>res.locals._log</code>.</p>
 <p>Add request to meta.</p>
 <h3 id="-log-addres-res-"><code>Log.addRes(res)</code></h3>
 <p>Add response to meta.</p>
-<h2 id="integration">Integration</h2>
-<p>TODO: Integration</p>
 <h2 id="contributions">Contributions</h2>
 <p>Please see the <a href="./CONTRIBUTING.md">Contributions Guide</a> for how to help out
 with the plugin.</p>
