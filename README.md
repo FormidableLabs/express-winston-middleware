@@ -104,28 +104,32 @@ and produces output for requests like:
 
 ## API
 
-* [`request(object)` - Request middleware](#-request-object-request-middleware)
-* [`Log(object)` - Logger class.](#-log-object-logger-class-)
+* [`request(opts, baseMeta)` - Request middleware](#-request-opts-basemeta-request-middleware)
+* [`Log(opts, baseMeta)` - Logger class.](#-log-opts-basemeta-logger-class-)
 * [`Log.addReq(req)`](#-log-addreq-req-)
 * [`Log.addRes(res)`](#-log-addres-res-)
 
-### `request(object)` - Request middleware
+### `request(opts, baseMeta)` - Request middleware
 
 Creates a middleware function using base metadata. Integration:
 
 ```
-app.use(winMid.request({ foo: "bar" }));
+app.use(winMid.request({
+  transports: [ new (winston.transports.Console)({ json: true }) ]
+}, { foo: "bar" }));
 ```
 
 Once integrated, a logger will be attached to the response locals,
 and available as `res.locals._log`.
 
-### `Log(object)` - Logger class.
+### `Log(opts, baseMeta)` - Logger class.
 
 Wraps Winston logger with additional functionality.
 
 ```
-var log = new winMid.Log({ foo: "bar" }));
+var log = new winMid.Log({
+  transports: [ new (winston.transports.Console)({ json: true }) ]
+}, { foo: "bar" }));
 ```
 
 ### `Log.addReq(req)`

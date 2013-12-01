@@ -27,12 +27,14 @@ var os = require("os"),
 // ----------------------------------------------------------------------------
 logUtils = {
   /**
-   * `request(object)` - Request middleware
+   * `request(opts, baseMeta)` - Request middleware
    *
    * Creates a middleware function using base metadata. Integration:
    *
    * ```
-   * app.use(winMid.request({ foo: "bar" }));
+   * app.use(winMid.request({
+   *   transports: [ new (winston.transports.Console)({ json: true }) ]
+   * }, { foo: "bar" }));
    * ```
    *
    * Once integrated, a logger will be attached to the response locals,
@@ -93,12 +95,14 @@ serverId = workerId ? "w" + workerId : "m";
 // Classes.
 // ----------------------------------------------------------------------------
 /**
- * `Log(object)` - Logger class.
+ * `Log(opts, baseMeta)` - Logger class.
  *
  * Wraps Winston logger with additional functionality.
  *
  * ```
- * var log = new winMid.Log({ foo: "bar" }));
+ * var log = new winMid.Log({
+ *   transports: [ new (winston.transports.Console)({ json: true }) ]
+ * }, { foo: "bar" }));
  * ```
  *
  * @param {Object} opts     Winston logger options.
