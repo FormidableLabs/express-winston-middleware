@@ -106,10 +106,15 @@ serverId = workerId ? "w" + workerId : "m";
  * @api public
  */
 Log = function (opts, baseMeta) {
-  // Create internal, real Winston logger.
-  this._log = new winston.Logger(_.extend({
+  var self = this;
+
+  // Update options.
+  opts = _.extend({
     levels: levels
-  }, opts));
+  }, opts);
+
+  // Create internal, real Winston logger.
+  this._log = new winston.Logger(opts);
 
   // Meta for all log statements.
   this._meta = _.merge({
@@ -120,6 +125,32 @@ Log = function (opts, baseMeta) {
       hostName: hostName
     }
   }, baseMeta);
+
+  // Iterate and patch all log levels.
+  _.each(opts.levels, function (num, level) {
+    self[level] = function (msg, metaOrCb, callback) {
+      var meta = _.extend({ date: (new Date()).toISOString(), }, this._meta),
+        args = [msg, meta];
+
+      // Extend with user-passed meta, if applicable.
+      if (_.isObject(metaOrCb)) {
+        _.extend(meta, metaOrCb, {});
+      }
+
+      // Infer arguments per Winston calling conventions.
+      if (arguments.length === 2 && _.isFunction(metaOrCb)) {
+        // Push callback to end.
+        args = [msg, meta, metaOrCb];
+
+      } else if (arguments.length > 2) {
+        // In order already.
+        args = [msg, meta, callback];
+      }
+
+      // Call real logger.
+      return this._log[level].apply(this._log, args);
+    };
+  });
 };
 
 /**
@@ -159,32 +190,6 @@ Log.prototype.addRes = function (res) {
     }
   });
 };
-
-// Iterate and patch all log levels.
-_.each(levels, function (num, level) {
-  Log.prototype[level] = function (msg, metaOrCb, callback) {
-    var meta = _.extend({ date: (new Date()).toISOString(), }, this._meta),
-      args = [msg, meta];
-
-    // Extend with user-passed meta, if applicable.
-    if (_.isObject(metaOrCb)) {
-      _.extend(meta, metaOrCb, {});
-    }
-
-    // Infer arguments per Winston calling conventions.
-    if (arguments.length === 2 && _.isFunction(metaOrCb)) {
-      // Push callback to end.
-      args = [msg, meta, metaOrCb];
-
-    } else if (arguments.length > 2) {
-      // In order already.
-      args = [msg, meta, callback];
-    }
-
-    // Call real logger.
-    return this._log[level].apply(this._log, args);
-  };
-});
 
 module.exports = {
   Log: Log,
