@@ -6,6 +6,9 @@
   "dependencies": {
     "lodash": "2.4.0"
   },
+  "peerDependencies": {
+    "winston": "*"
+  },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.7.0",
     "grunt-cli": "~0.1.9",
@@ -13,7 +16,8 @@
     "grunt": "~0.4.1",
     "grunt-contrib-jade": "~0.8.0",
     "dox": "~0.4.4",
-    "marked": "~0.2.10"
+    "marked": "~0.2.10",
+    "winston": "~0.7.2"
   },
   "scripts": {
     "test": "./node_modules/.bin/grunt check"

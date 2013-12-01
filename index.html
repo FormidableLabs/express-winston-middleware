@@ -31,6 +31,24 @@ middleware for <a href="http://expressjs.com/">Express</a>.</p>
 <p>You can install <code>express-winston-middleware</code> using <a href="https://npmjs.org/package/express-winston-middleware">NPM</a>:</p>
 <pre><code>$ npm install express-winston-middleware</code></pre>
 <h2 id="api">API</h2>
+<ul>
+<li><a href="#-request-object-request-middleware"><code>request(object)</code> - Request middleware</a></li>
+<li><a href="#-log-object-logger-class-"><code>Log(object)</code> - Logger class.</a></li>
+<li><a href="#-log-addreq-req-"><code>Log.addReq(req)</code></a></li>
+<li><a href="#-log-addres-res-"><code>Log.addRes(res)</code></a></li>
+</ul>
+<h3 id="-request-object-request-middleware"><code>request(object)</code> - Request middleware</h3>
+<p>Creates a middleware function using base metadata. Integration:</p>
+<pre><code>app.use(winExMid.request({ foo: &quot;bar&quot; }));</code></pre>
+<p>Once integrated, a logger will be attached to the response locals,
+and available as <code>res.locals._log</code>.</p>
+<h3 id="-log-object-logger-class-"><code>Log(object)</code> - Logger class.</h3>
+<p>Wraps Winston logger with additional functionality.</p>
+<pre><code>var log = new winExMid.Log({ foo: &quot;bar&quot; }));</code></pre>
+<h3 id="-log-addreq-req-"><code>Log.addReq(req)</code></h3>
+<p>Add request to meta.</p>
+<h3 id="-log-addres-res-"><code>Log.addRes(res)</code></h3>
+<p>Add response to meta.</p>
 <h2 id="integration">Integration</h2>
 <p>TODO: Integration</p>
 <h2 id="contributions">Contributions</h2>

@@ -85,7 +85,8 @@ module.exports = function (grunt) {
       jade: {
         files: [
           "_templates/**/*.jade",
-          "*.md"
+          "*.md",
+          "index.js"
         ],
         tasks: [
           "jade"
