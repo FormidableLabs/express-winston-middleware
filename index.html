@@ -39,12 +39,12 @@ middleware for <a href="http://expressjs.com/">Express</a>.</p>
 </ul>
 <h3 id="-request-object-request-middleware"><code>request(object)</code> - Request middleware</h3>
 <p>Creates a middleware function using base metadata. Integration:</p>
-<pre><code>app.use(winExMid.request({ foo: &quot;bar&quot; }));</code></pre>
+<pre><code>app.use(winMid.request({ foo: &quot;bar&quot; }));</code></pre>
 <p>Once integrated, a logger will be attached to the response locals,
 and available as <code>res.locals._log</code>.</p>
 <h3 id="-log-object-logger-class-"><code>Log(object)</code> - Logger class.</h3>
 <p>Wraps Winston logger with additional functionality.</p>
-<pre><code>var log = new winExMid.Log({ foo: &quot;bar&quot; }));</code></pre>
+<pre><code>var log = new winMid.Log({ foo: &quot;bar&quot; }));</code></pre>
 <h3 id="-log-addreq-req-"><code>Log.addReq(req)</code></h3>
 <p>Add request to meta.</p>
 <h3 id="-log-addres-res-"><code>Log.addRes(res)</code></h3>

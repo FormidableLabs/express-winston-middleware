@@ -24,7 +24,7 @@ $ npm install express-winston-middleware
 Creates a middleware function using base metadata. Integration:
 
 ```
-app.use(winExMid.request({ foo: "bar" }));
+app.use(winMid.request({ foo: "bar" }));
 ```
 
 Once integrated, a logger will be attached to the response locals,
@@ -35,7 +35,7 @@ and available as `res.locals._log`.
 Wraps Winston logger with additional functionality.
 
 ```
-var log = new winExMid.Log({ foo: "bar" }));
+var log = new winMid.Log({ foo: "bar" }));
 ```
 
 ### `Log.addReq(req)`

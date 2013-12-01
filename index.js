@@ -16,7 +16,6 @@ var os = require("os"),
   _ = require("lodash"),
   winston = require("winston"),
   levels = winston.config.syslog.levels,
-  transports = [],
   hostName = os.hostname(),
   workerId,
   serverId,
@@ -33,21 +32,22 @@ logUtils = {
    * Creates a middleware function using base metadata. Integration:
    *
    * ```
-   * app.use(winExMid.request({ foo: "bar" }));
+   * app.use(winMid.request({ foo: "bar" }));
    * ```
    *
    * Once integrated, a logger will be attached to the response locals,
    * and available as `res.locals._log`.
    *
+   * @param {Object} opts     Winston logger options.
    * @param {Object} baseMeta Metadata for all log statements.
    * @api public
    */
-  request: function (baseMeta) {
+  request: function (opts, baseMeta) {
     baseMeta || (baseMeta = {});
 
     return function (req, res, next) {
       // Create logger and attach to locals.
-      var log = res.locals._log = new Log(baseMeta),
+      var log = res.locals._log = new Log(opts, baseMeta),
         _end = res.end;
 
       // Add request.
@@ -98,18 +98,18 @@ serverId = workerId ? "w" + workerId : "m";
  * Wraps Winston logger with additional functionality.
  *
  * ```
- * var log = new winExMid.Log({ foo: "bar" }));
+ * var log = new winMid.Log({ foo: "bar" }));
  * ```
  *
+ * @param {Object} opts     Winston logger options.
  * @param {Object} baseMeta Metadata for all log statements.
  * @api public
  */
-Log = function (baseMeta) {
+Log = function (opts, baseMeta) {
   // Create internal, real Winston logger.
-  this._log = new winston.Logger({
-    levels: levels,
-    transports: transports
-  });
+  this._log = new winston.Logger(_.extend({
+    levels: levels
+  }, opts));
 
   // Meta for all log statements.
   this._meta = _.merge({
