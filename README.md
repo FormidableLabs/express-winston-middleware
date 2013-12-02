@@ -106,6 +106,7 @@ and produces output for requests like:
 
 * [`request(opts, baseMeta)` - Request middleware](#-request-opts-basemeta-request-middleware)
 * [`Log(opts, baseMeta)` - Logger class.](#-log-opts-basemeta-logger-class-)
+* [`Log.addMeta(meta)`](#-log-addmeta-meta-)
 * [`Log.addReq(req)`](#-log-addreq-req-)
 * [`Log.addRes(res)`](#-log-addres-res-)
 
@@ -131,6 +132,10 @@ var log = new winMid.Log({
   transports: [ new (winston.transports.Console)({ json: true }) ]
 }, { foo: "bar" }));
 ```
+
+### `Log.addMeta(meta)`
+
+Add arbitrary meta to all subsequent log statements.
 
 ### `Log.addReq(req)`
 

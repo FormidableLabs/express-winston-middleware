@@ -158,6 +158,18 @@ Log = function (opts, baseMeta) {
 };
 
 /**
+ * `Log.addMeta(meta)`
+ *
+ * Add arbitrary meta to all subsequent log statements.
+ *
+ * @param {Object} meta Metadata object.
+ * @api public
+ */
+Log.prototype.addMeta = function (meta) {
+  _.merge(this._meta, meta);
+};
+
+/**
  * `Log.addReq(req)`
  *
  * Add request to meta.
@@ -169,7 +181,7 @@ Log.prototype.addReq = function (req) {
   var maxChars = 200,
     urlObj = url.parse(req.url);
 
-  _.merge(this._meta, {
+  this.addMeta({
     req: {
       method: req.method,
       host: req.headers.host,
@@ -188,7 +200,7 @@ Log.prototype.addReq = function (req) {
  * @api public
  */
 Log.prototype.addRes = function (res) {
-  _.merge(this._meta, {
+  this.addMeta({
     res: {
       statusCode: res.statusCode
     }

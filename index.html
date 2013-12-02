@@ -104,6 +104,7 @@ app.use(logging.createMiddle(requestLogger({
 <ul>
 <li><a href="#-request-opts-basemeta-request-middleware"><code>request(opts, baseMeta)</code> - Request middleware</a></li>
 <li><a href="#-log-opts-basemeta-logger-class-"><code>Log(opts, baseMeta)</code> - Logger class.</a></li>
+<li><a href="#-log-addmeta-meta-"><code>Log.addMeta(meta)</code></a></li>
 <li><a href="#-log-addreq-req-"><code>Log.addReq(req)</code></a></li>
 <li><a href="#-log-addres-res-"><code>Log.addRes(res)</code></a></li>
 </ul>
@@ -119,6 +120,8 @@ and available as <code>res.locals._log</code>.</p>
 <pre><code>var log = new winMid.Log({
   transports: [ new (winston.transports.Console)({ json: true }) ]
 }, { foo: &quot;bar&quot; }));</code></pre>
+<h3 id="-log-addmeta-meta-"><code>Log.addMeta(meta)</code></h3>
+<p>Add arbitrary meta to all subsequent log statements.</p>
 <h3 id="-log-addreq-req-"><code>Log.addReq(req)</code></h3>
 <p>Add request to meta.</p>
 <h3 id="-log-addres-res-"><code>Log.addRes(res)</code></h3>
