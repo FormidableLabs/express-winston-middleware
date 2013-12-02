@@ -103,13 +103,13 @@ app.use(logging.createMiddle(requestLogger({
 <h2 id="api">API</h2>
 <ul>
 <li><a href="#-request-opts-basemeta-express-request-middleware"><code>request(opts, baseMeta)</code> - Express request middleware</a></li>
-<li><a href="#-error-opts-express-error-middleware"><code>error(opts)</code> - Express error middleware</a></li>
-<li><a href="#-uncaught-opts-global-uncaught-exception-handler"><code>uncaught(opts)</code> - Global uncaught exception handler</a></li>
+<li><a href="#-error-opts-basemeta-express-error-middleware"><code>error(opts, baseMeta)</code> - Express error middleware</a></li>
+<li><a href="#-uncaught-opts-basemeta-global-uncaught-exception-handler"><code>uncaught(opts, baseMeta)</code> - Global uncaught exception handler</a></li>
 <li><a href="#-log-opts-basemeta-logger-class-"><code>Log(opts, baseMeta)</code> - Logger class.</a></li>
 <li><a href="#-log-addmeta-meta-"><code>Log.addMeta(meta)</code></a></li>
 <li><a href="#-log-addreq-req-"><code>Log.addReq(req)</code></a></li>
 <li><a href="#-log-addres-res-"><code>Log.addRes(res)</code></a></li>
-<li><a href="#-log-addres-err-"><code>Log.addRes(err)</code></a></li>
+<li><a href="#-log-adderror-err-"><code>Log.addError(err)</code></a></li>
 </ul>
 <h3 id="-request-opts-basemeta-express-request-middleware"><code>request(opts, baseMeta)</code> - Express request middleware</h3>
 <p>Creates a middleware function using base metadata. Integration:</p>
@@ -118,16 +118,16 @@ app.use(logging.createMiddle(requestLogger({
 }, { foo: &quot;bar&quot; }));</code></pre>
 <p>Once integrated, a logger will be attached to the response locals,
 and available as <code>res.locals._log</code>.</p>
-<h3 id="-error-opts-express-error-middleware"><code>error(opts)</code> - Express error middleware</h3>
+<h3 id="-error-opts-basemeta-express-error-middleware"><code>error(opts, baseMeta)</code> - Express error middleware</h3>
 <p>Creates a middleware function for Express. Integration:</p>
 <pre><code>app.use(winMid.error({
   transports: [ new (winston.transports.Console)({ json: true }) ]
-}));</code></pre>
-<h3 id="-uncaught-opts-global-uncaught-exception-handler"><code>uncaught(opts)</code> - Global uncaught exception handler</h3>
+}, { foo: &quot;bar&quot; }));</code></pre>
+<h3 id="-uncaught-opts-basemeta-global-uncaught-exception-handler"><code>uncaught(opts, baseMeta)</code> - Global uncaught exception handler</h3>
 <p>Creates a handler function for any uncaught exception. Integration:</p>
 <pre><code>process.on(&quot;uncaughtException&quot;, winMid.uncaught({
   transports: [ new (winston.transports.Console)({ json: true }) ]
-}));</code></pre>
+}, { foo: &quot;bar&quot; }));</code></pre>
 <p><strong>Note</strong>: Terminates process at end.</p>
 <h3 id="-log-opts-basemeta-logger-class-"><code>Log(opts, baseMeta)</code> - Logger class.</h3>
 <p>Wraps Winston logger with additional functionality.</p>
@@ -140,7 +140,7 @@ and available as <code>res.locals._log</code>.</p>
 <p>Add request to meta.</p>
 <h3 id="-log-addres-res-"><code>Log.addRes(res)</code></h3>
 <p>Add response to meta.</p>
-<h3 id="-log-addres-err-"><code>Log.addRes(err)</code></h3>
+<h3 id="-log-adderror-err-"><code>Log.addError(err)</code></h3>
 <p>Add error to meta.</p>
 <h2 id="contributions">Contributions</h2>
 <p>Please see the <a href="./CONTRIBUTING.md">Contributions Guide</a> for how to help out
@@ -151,6 +151,10 @@ Released under the <a href="./LICENSE.txt">MIT</a> License.</p>
 
         </div>
         <div id="history"><h1 id="history">History</h1>
+<h2 id="0-0-3">0.0.3</h2>
+<ul>
+<li>Add <code>baseMeta</code> option to <code>error</code>, <code>uncaught</code> handlers.</li>
+</ul>
 <h2 id="0-0-2">0.0.2</h2>
 <ul>
 <li>Add <code>error</code>, <code>uncaught</code> handlers.</li>

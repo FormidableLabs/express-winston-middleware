@@ -105,13 +105,13 @@ and produces output for requests like:
 ## API
 
 * [`request(opts, baseMeta)` - Express request middleware](#-request-opts-basemeta-express-request-middleware)
-* [`error(opts)` - Express error middleware](#-error-opts-express-error-middleware)
-* [`uncaught(opts)` - Global uncaught exception handler](#-uncaught-opts-global-uncaught-exception-handler)
+* [`error(opts, baseMeta)` - Express error middleware](#-error-opts-basemeta-express-error-middleware)
+* [`uncaught(opts, baseMeta)` - Global uncaught exception handler](#-uncaught-opts-basemeta-global-uncaught-exception-handler)
 * [`Log(opts, baseMeta)` - Logger class.](#-log-opts-basemeta-logger-class-)
 * [`Log.addMeta(meta)`](#-log-addmeta-meta-)
 * [`Log.addReq(req)`](#-log-addreq-req-)
 * [`Log.addRes(res)`](#-log-addres-res-)
-* [`Log.addRes(err)`](#-log-addres-err-)
+* [`Log.addError(err)`](#-log-adderror-err-)
 
 ### `request(opts, baseMeta)` - Express request middleware
 
@@ -126,24 +126,24 @@ app.use(winMid.request({
 Once integrated, a logger will be attached to the response locals,
 and available as `res.locals._log`.
 
-### `error(opts)` - Express error middleware
+### `error(opts, baseMeta)` - Express error middleware
 
 Creates a middleware function for Express. Integration:
 
 ```
 app.use(winMid.error({
   transports: [ new (winston.transports.Console)({ json: true }) ]
-}));
+}, { foo: "bar" }));
 ```
 
-### `uncaught(opts)` - Global uncaught exception handler
+### `uncaught(opts, baseMeta)` - Global uncaught exception handler
 
 Creates a handler function for any uncaught exception. Integration:
 
 ```
 process.on("uncaughtException", winMid.uncaught({
   transports: [ new (winston.transports.Console)({ json: true }) ]
-}));
+}, { foo: "bar" }));
 ```
 
 **Note**: Terminates process at end.
@@ -170,7 +170,7 @@ Add request to meta.
 
 Add response to meta.
 
-### `Log.addRes(err)`
+### `Log.addError(err)`
 
 Add error to meta.
 

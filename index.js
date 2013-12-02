@@ -45,8 +45,6 @@ middleware = {
    * @api public
    */
   request: function (opts, baseMeta) {
-    baseMeta || (baseMeta = {});
-
     return function (req, res, next) {
       // Create logger and attach to locals.
       var log = res.locals._log = new Log(opts, baseMeta),
@@ -81,23 +79,26 @@ middleware = {
   },
 
   /**
-   * `error(opts)` - Express error middleware
+   * `error(opts, baseMeta)` - Express error middleware
    *
    * Creates a middleware function for Express. Integration:
    *
    * ```
    * app.use(winMid.error({
    *   transports: [ new (winston.transports.Console)({ json: true }) ]
-   * }));
+   * }, { foo: "bar" }));
    * ```
    *
-   * @param {Object} opts Winston logger options.
+   * @param {Object} opts     Winston logger options.
+   * @param {Object} baseMeta Metadata for log statements.
    * @api public
    */
-  error: function (opts) {
+  error: function (opts, baseMeta) {
+    var meta = _.extend({ type: "unhandled_error" }, baseMeta);
+
     return function (err, req, res, next) {
       // Create logger and add objects.
-      (new Log(opts, { type: "unhandled_error" }))
+      (new Log(opts, meta))
         .addReq(req)
         .addRes(res)
         .addError(err)
@@ -109,25 +110,29 @@ middleware = {
   },
 
   /**
-   * `uncaught(opts)` - Global uncaught exception handler
+   * `uncaught(opts, baseMeta)` - Global uncaught exception handler
    *
    * Creates a handler function for any uncaught exception. Integration:
    *
    * ```
    * process.on("uncaughtException", winMid.uncaught({
    *   transports: [ new (winston.transports.Console)({ json: true }) ]
-   * }));
+   * }, { foo: "bar" }));
    * ```
    *
    * **Note**: Terminates process at end.
    *
+   * @param {Object} opts     Winston logger options.
+   * @param {Object} baseMeta Metadata for log statements.
    * @api public
    */
-  uncaught: function (opts) {
+  uncaught: function (opts, baseMeta) {
+    var meta = _.extend({ type: "uncaught_exception" }, baseMeta);
+
     return function (err) {
       try {
         // Try real logger.
-        return (new Log(opts, { type: "uncaught_exception" }))
+        return (new Log(opts, meta))
           .addError(err)
           .error("Uncaught exception");
 
@@ -278,7 +283,7 @@ Log.prototype.addRes = function (res) {
 };
 
 /**
- * `Log.addRes(err)`
+ * `Log.addError(err)`
  *
  * Add error to meta.
  *
