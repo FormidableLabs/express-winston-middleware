@@ -114,7 +114,7 @@ middleware = {
    * Creates a handler function for any uncaught exception. Integration:
    *
    * ```
-   * app.use(winMid.error({
+   * process.on("uncaughtException", winMid.uncaught({
    *   transports: [ new (winston.transports.Console)({ json: true }) ]
    * }));
    * ```
@@ -126,11 +126,13 @@ middleware = {
   uncaught: function (opts) {
     return function (err) {
       try {
+        // Try real logger.
         return (new Log(opts, { type: "uncaught_exception" }))
-          .addErr(err)
+          .addError(err)
           .error("Uncaught exception");
 
       } catch (other) {
+        // Else, give up and use straight console logging.
         console.log((err || {}).stack || err || "Unknown");
         console.log("Error: Hit additional error logging the previous error.");
         console.log((other || {}).stack || other || "Unknown");
@@ -301,5 +303,6 @@ Log.prototype.addError = function (err) {
 module.exports = {
   Log: Log,
   request: middleware.request,
+  uncaught: middleware.uncaught,
   error: middleware.error
 };

@@ -125,7 +125,7 @@ and available as <code>res.locals._log</code>.</p>
 }));</code></pre>
 <h3 id="-uncaught-opts-global-uncaught-exception-handler"><code>uncaught(opts)</code> - Global uncaught exception handler</h3>
 <p>Creates a handler function for any uncaught exception. Integration:</p>
-<pre><code>app.use(winMid.error({
+<pre><code>process.on(&quot;uncaughtException&quot;, winMid.uncaught({
   transports: [ new (winston.transports.Console)({ json: true }) ]
 }));</code></pre>
 <p><strong>Note</strong>: Terminates process at end.</p>

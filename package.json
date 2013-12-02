@@ -7,8 +7,7 @@
     "lodash": "2.4.0"
   },
   "peerDependencies": {
-    "winston": "*",
-    "express": "*"
+    "winston": "*"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.7.0",
@@ -18,8 +17,7 @@
     "grunt-contrib-jade": "~0.8.0",
     "dox": "~0.4.4",
     "marked": "~0.2.10",
-    "winston": "~0.7.2",
-    "express": "~3.4.6"
+    "winston": "~0.7.2"
   },
   "scripts": {
     "test": "./node_modules/.bin/grunt check"

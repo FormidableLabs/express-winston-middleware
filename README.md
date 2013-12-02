@@ -141,7 +141,7 @@ app.use(winMid.error({
 Creates a handler function for any uncaught exception. Integration:
 
 ```
-app.use(winMid.error({
+process.on("uncaughtException", winMid.uncaught({
   transports: [ new (winston.transports.Console)({ json: true }) ]
 }));
 ```
