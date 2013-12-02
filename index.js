@@ -19,15 +19,15 @@ var os = require("os"),
   hostName = os.hostname(),
   workerId,
   serverId,
-  logUtils,
+  middleware,
   Log;
 
 // ----------------------------------------------------------------------------
-// Helper utilities.
+// Middleware.
 // ----------------------------------------------------------------------------
-logUtils = {
+middleware = {
   /**
-   * `request(opts, baseMeta)` - Request middleware
+   * `request(opts, baseMeta)` - Express request middleware
    *
    * Creates a middleware function using base metadata. Integration:
    *
@@ -77,6 +77,68 @@ logUtils = {
       };
 
       return next();
+    };
+  },
+
+  /**
+   * `error(opts)` - Express error middleware
+   *
+   * Creates a middleware function for Express. Integration:
+   *
+   * ```
+   * app.use(winMid.error({
+   *   transports: [ new (winston.transports.Console)({ json: true }) ]
+   * }));
+   * ```
+   *
+   * @param {Object} opts Winston logger options.
+   * @api public
+   */
+  error: function (opts) {
+    return function (err, req, res, next) {
+      // Create logger and add objects.
+      (new Log(opts, { type: "unhandled_error" }))
+        .addReq(req)
+        .addRes(res)
+        .addError(err)
+        .error("unhandled error");
+
+      // Pass to underlying Express handler.
+      next(err);
+    };
+  },
+
+  /**
+   * `uncaught(opts)` - Global uncaught exception handler
+   *
+   * Creates a handler function for any uncaught exception. Integration:
+   *
+   * ```
+   * app.use(winMid.error({
+   *   transports: [ new (winston.transports.Console)({ json: true }) ]
+   * }));
+   * ```
+   *
+   * **Note**: Terminates process at end.
+   *
+   * @api public
+   */
+  uncaught: function (opts) {
+    return function (err) {
+      try {
+        return (new Log(opts, { type: "uncaught_exception" }))
+          .addErr(err)
+          .error("Uncaught exception");
+
+      } catch (other) {
+        console.log((err || {}).stack || err || "Unknown");
+        console.log("Error: Hit additional error logging the previous error.");
+        console.log((other || {}).stack || other || "Unknown");
+        return;
+
+      } finally {
+        process.exit(1);
+      }
     };
   }
 };
@@ -167,6 +229,8 @@ Log = function (opts, baseMeta) {
  */
 Log.prototype.addMeta = function (meta) {
   _.merge(this._meta, meta);
+
+  return this;
 };
 
 /**
@@ -189,6 +253,8 @@ Log.prototype.addReq = function (req) {
       query: (urlObj.query || "").substr(0, maxChars)
     }
   });
+
+  return this;
 };
 
 /**
@@ -205,9 +271,35 @@ Log.prototype.addRes = function (res) {
       statusCode: res.statusCode
     }
   });
+
+  return this;
+};
+
+/**
+ * `Log.addRes(err)`
+ *
+ * Add error to meta.
+ *
+ * @param {Error} err Error object.
+ * @api public
+ */
+Log.prototype.addError = function (err) {
+  var maxChars = 200;
+
+  this.addMeta({
+    err: {
+      msg: _.isNull(err.message) ? err.toString() : err.message,
+      args: (err.arguments || "").toString().substr(0, maxChars),
+      type: err.type || null,
+      stack: (err.stack || "").split("\n"),
+    }
+  });
+
+  return this;
 };
 
 module.exports = {
   Log: Log,
-  request: logUtils.request
+  request: middleware.request,
+  error: middleware.error
 };

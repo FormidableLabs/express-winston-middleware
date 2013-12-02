@@ -3,7 +3,8 @@ History
 
 ## 0.0.2
 
-* Add `Log.addMeta()` method.
+* Add `error`, `uncaught` handlers.
+* Add `Log.addMeta()`, `Log.addError()` method.
 
 ## 0.0.1
 
