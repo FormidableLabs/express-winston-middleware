@@ -4,7 +4,7 @@ var _ = require("lodash"),
   Transport = require("./support/transport").Fake;
 
 describe("Log", function () {
-  describe("constructor", function () {
+  describe("#constructor", function () {
     it("should handle base cases", function () {
       expect(Log).to.be.ok;
       expect(new Log()).to.be.a("object");
@@ -23,7 +23,7 @@ describe("Log", function () {
     });
   });
 
-  describe("log", function () {
+  describe("#log", function () {
     beforeEach(function () {
       var transport = new Transport();
 
@@ -59,8 +59,22 @@ describe("Log", function () {
         foo: "bar",
         boo: "time"
       });
-
     });
   });
 
+  describe("#addMeta", function () {
+    it("should add tests here"); // TODO
+  });
+
+  describe("#addReq", function () {
+    it("should add tests here"); // TODO
+  });
+
+  describe("#addRes", function () {
+    it("should add tests here"); // TODO
+  });
+
+  describe("#addError", function () {
+    it("should add tests here"); // TODO
+  });
 });
