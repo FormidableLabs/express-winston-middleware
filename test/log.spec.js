@@ -1,10 +1,13 @@
 
-var Log = require("..");
+var Log = require("..").Log;
 
 describe("Log", function () {
   describe("constructor", function () {
-    it("should create a log object", function () {
+    it("should handle base cases", function () {
       expect(Log).to.be.ok;
+      expect(new Log()).to.be.a("object");
+      expect(new Log({})).to.be.a("object");
+      expect(new Log({}, {})).to.be.a("object");
     });
   });
 });
