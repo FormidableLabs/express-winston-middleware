@@ -17,7 +17,11 @@
     "grunt-contrib-jade": "~0.8.0",
     "dox": "~0.4.4",
     "marked": "~0.2.10",
-    "winston": "~0.7.2"
+    "winston": "~0.7.2",
+    "chai": "~1.8.1",
+    "mocha": "~1.15.1",
+    "grunt-mocha-test": "~0.8.1",
+    "sinon": "~1.7.3"
   },
   "scripts": {
     "test": "./node_modules/.bin/grunt check"

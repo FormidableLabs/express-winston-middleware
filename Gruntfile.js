@@ -53,9 +53,20 @@ module.exports = function (grunt) {
         files: {
           src:  [
             "*.js",
-            "examples/**/*.js"
+            "examples/**/*.js",
+            "test/**/*.js"
           ]
         }
+      }
+    },
+
+    mochaTest: {
+      test: {
+        options: {
+          reporter: "spec",
+          require: "test/setup.js"
+        },
+        src: ["test/**/*.spec.js"]
       }
     },
 
@@ -103,6 +114,7 @@ module.exports = function (grunt) {
 
   // Dependencies
   grunt.loadNpmTasks("grunt-contrib-jshint");
+  grunt.loadNpmTasks("grunt-mocha-test");
   grunt.loadNpmTasks("grunt-contrib-watch");
   grunt.loadNpmTasks("grunt-contrib-jade");
 
@@ -122,6 +134,7 @@ module.exports = function (grunt) {
   grunt.registerTask("build",     ["build:api", "jade"]);
 
   // Tasks.
-  grunt.registerTask("check",     ["jshint"]);
+  grunt.registerTask("test",      ["mochaTest"]);
+  grunt.registerTask("check",     ["jshint", "test"]);
   grunt.registerTask("default",   ["check", "build"]);
 };
