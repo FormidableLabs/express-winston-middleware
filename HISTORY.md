@@ -3,6 +3,7 @@ History
 
 ## 0.0.3
 
+* Start adding in tests (many still pending).
 * Add `baseMeta` option to `error`, `uncaught` handlers.
 
 ## 0.0.2
