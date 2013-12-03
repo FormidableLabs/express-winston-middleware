@@ -21,7 +21,8 @@
     "chai": "~1.8.1",
     "mocha": "~1.15.1",
     "grunt-mocha-test": "~0.8.1",
-    "sinon": "~1.7.3"
+    "sinon": "~1.7.3",
+    "sinon-chai": "~2.4.0"
   },
   "scripts": {
     "test": "./node_modules/.bin/grunt check"
