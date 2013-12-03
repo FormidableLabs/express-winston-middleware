@@ -179,6 +179,15 @@ Add error to meta.
 Please see the [Contributions Guide](./CONTRIBUTING.md) for how to help out
 with the plugin.
 
+We test all changes with [Travis CI][trav]. Here's our current
+[build status][trav_site]:
+
+[![Build Status][trav_img]][trav_site]
+
+[trav]: https://travis-ci.org/
+[trav_img]: https://api.travis-ci.org/FormidableLabs/express-winston-middleware.png
+[trav_site]: https://travis-ci.org/FormidableLabs/express-winston-middleware
+
 ## Licenses
 All code is Copyright 2013 Ryan Roemer.
 Released under the [MIT](./LICENSE.txt) License.
