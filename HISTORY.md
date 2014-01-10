@@ -1,6 +1,11 @@
 History
 =======
 
+## Current
+
+* Add client IP request metadata (with logic to get past LB).
+* Add `examples/server.js` Express server with request logging.
+
 ## 0.0.3
 
 * Start adding in tests (many still pending).
