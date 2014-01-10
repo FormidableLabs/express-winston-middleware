@@ -19,8 +19,31 @@ var os = require("os"),
   hostName = os.hostname(),
   workerId,
   serverId,
+  utils,
   middleware,
   Log;
+
+// ----------------------------------------------------------------------------
+// Helpers.
+// ----------------------------------------------------------------------------
+utils = {
+  clientIp:  function (req) {
+    var forwards = req.header("x-forwarded-for"),
+      ipAddr = req.connection.remoteAddress,
+      firstIp,
+      ips;
+
+    if (forwards) {
+      ips = forwards.split(",");
+      firstIp = (ips[0] || "").replace(/^\s+|\s+$/, "");
+      if (firstIp) {
+        return firstIp;
+      }
+    }
+
+    return ipAddr;
+  }
+};
 
 // ----------------------------------------------------------------------------
 // Middleware.
@@ -257,7 +280,10 @@ Log.prototype.addReq = function (req) {
       method: req.method,
       host: req.headers.host,
       path: (urlObj.pathname || "").substr(0, maxChars),
-      query: (urlObj.query || "").substr(0, maxChars)
+      query: (urlObj.query || "").substr(0, maxChars),
+      client: {
+        ip: utils.clientIp(req)
+      }
     }
   });
 
