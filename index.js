@@ -54,7 +54,7 @@ middleware = {
    *
    * Creates a middleware function using base metadata. Integration:
    *
-   * ```
+   * ```js
    * app.use(winMid.request({
    *   transports: [ new (winston.transports.Console)({ json: true }) ]
    * }, { foo: "bar" }));

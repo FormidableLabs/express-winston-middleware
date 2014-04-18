@@ -100,6 +100,16 @@ app.use(logging.createMiddle(requestLogger({
   &quot;level&quot;: &quot;info&quot;,
   &quot;message&quot;: &quot;request&quot;
 }</code></pre>
+<p>The middleware attaches a logger to the response locals,
+available as <code>res.locals._log</code>, so that <em>in addition</em> to automatic
+request logging messages you can log extra messages with all of the
+current request metadata. E.g.:</p>
+<pre><code class="lang-js">app.get(&quot;/foo&quot;, function (req, res) {
+  res.locals._log.info(&quot;This is an extra manual log message!&quot;, {
+    extra: &quot;metadata&quot;
+  });
+  // Rest of your code here...
+});</code></pre>
 <h2 id="api">API</h2>
 <ul>
 <li><a href="#-request-opts-basemeta-express-request-middleware"><code>request(opts, baseMeta)</code> - Express request middleware</a></li>
@@ -113,7 +123,7 @@ app.use(logging.createMiddle(requestLogger({
 </ul>
 <h3 id="-request-opts-basemeta-express-request-middleware"><code>request(opts, baseMeta)</code> - Express request middleware</h3>
 <p>Creates a middleware function using base metadata. Integration:</p>
-<pre><code>app.use(winMid.request({
+<pre><code class="lang-js">app.use(winMid.request({
   transports: [ new (winston.transports.Console)({ json: true }) ]
 }, { foo: &quot;bar&quot; }));</code></pre>
 <p>Once integrated, a logger will be attached to the response locals,

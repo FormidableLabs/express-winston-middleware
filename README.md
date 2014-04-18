@@ -102,6 +102,20 @@ and produces output for requests like:
 }
 ```
 
+The middleware attaches a logger to the response locals,
+available as `res.locals._log`, so that *in addition* to automatic
+request logging messages you can log extra messages with all of the
+current request metadata. E.g.:
+
+```js
+app.get("/foo", function (req, res) {
+  res.locals._log.info("This is an extra manual log message!", {
+    extra: "metadata"
+  });
+  // Rest of your code here...
+});
+```
+
 ## API
 
 * [`request(opts, baseMeta)` - Express request middleware](#-request-opts-basemeta-express-request-middleware)
@@ -117,7 +131,7 @@ and produces output for requests like:
 
 Creates a middleware function using base metadata. Integration:
 
-```
+```js
 app.use(winMid.request({
   transports: [ new (winston.transports.Console)({ json: true }) ]
 }, { foo: "bar" }));

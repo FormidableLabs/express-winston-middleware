@@ -13,4 +13,6 @@ var log = new Log({
 });
 
 // Log something.
-log.info("Hello World!");
+log.info("Hello World!", {
+  extra: "metadata"
+});
