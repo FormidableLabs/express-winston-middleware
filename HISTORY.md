@@ -1,7 +1,7 @@
 History
 =======
 
-## Current
+## 0.0.4
 
 * Add client IP request metadata (with logic to get past LB).
 * Add `examples/server.js` Express server with request logging.
