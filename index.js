@@ -61,20 +61,21 @@ middleware = {
    * ```
    *
    * Once integrated, a logger will be attached to the response locals,
-   * and available as `res.locals._log`.
+   * and available as `res.locals._log`. The logger will then be removed at
+   * the end of the request.
    *
-   * @param {Object} opts     Winston logger options.
-   * @param {Object} baseMeta Metadata for all log statements.
+   * @param {Object} opts             Winston logger options.
+   * @param {Object} baseMeta         Metadata for all log statements.
    * @api public
    */
   request: function (opts, baseMeta) {
     return function (req, res, next) {
       // Create logger and attach to locals.
-      var log = res.locals._log = new Log(opts, baseMeta),
-        _end = res.end;
+      res.locals._log = new Log(opts, baseMeta);
+      var _end = res.end;
 
       // Add request.
-      log.addReq(req);
+      res.locals._log.addReq(req);
 
       // Proxy end (what connect.logger does) to get status code.
       res.end = function (chunk, encoding) {
@@ -93,8 +94,11 @@ middleware = {
         level = 500 <= status                 ? "error"   : level;
 
         // Add response info and log out.
-        log.addRes(res);
-        log[level]("request");
+        res.locals._log.addRes(res);
+        res.locals._log[level]("request");
+
+        // Remove local logger.
+        delete res.locals._log;
       };
 
       return next();

@@ -138,7 +138,8 @@ app.use(winMid.request({
 ```
 
 Once integrated, a logger will be attached to the response locals,
-and available as `res.locals._log`.
+and available as `res.locals._log`. The logger will then be removed at
+the end of the request.
 
 ### `error(opts, baseMeta)` - Express error middleware
 
