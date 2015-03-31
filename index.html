@@ -127,7 +127,8 @@ current request metadata. E.g.:</p>
   transports: [ new (winston.transports.Console)({ json: true }) ]
 }, { foo: &quot;bar&quot; }));</code></pre>
 <p>Once integrated, a logger will be attached to the response locals,
-and available as <code>res.locals._log</code>.</p>
+and available as <code>res.locals._log</code>. The logger will then be removed at
+the end of the request.</p>
 <h3 id="-error-opts-basemeta-express-error-middleware"><code>error(opts, baseMeta)</code> - Express error middleware</h3>
 <p>Creates a middleware function for Express. Integration:</p>
 <pre><code>app.use(winMid.error({
@@ -164,7 +165,7 @@ Released under the <a href="./LICENSE.txt">MIT</a> License.</p>
 
         </div>
         <div id="history"><h1 id="history">History</h1>
-<h2 id="current">Current</h2>
+<h2 id="0-0-4">0.0.4</h2>
 <ul>
 <li>Add client IP request metadata (with logic to get past LB).</li>
 <li>Add <code>examples/server.js</code> Express server with request logging.</li>

@@ -1,6 +1,10 @@
 History
 =======
 
+## Current
+
+* Explicitly delete the request logger.
+
 ## 0.0.4
 
 * Add client IP request metadata (with logic to get past LB).
