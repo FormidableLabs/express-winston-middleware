@@ -10,20 +10,20 @@
     "winston": "*"
   },
   "devDependencies": {
-    "grunt-contrib-jshint": "~0.7.0",
-    "grunt-cli": "~0.1.9",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt": "~0.4.1",
-    "grunt-contrib-jade": "~0.8.0",
-    "dox": "~0.4.4",
-    "marked": "~0.2.10",
-    "winston": "~0.7.2",
-    "chai": "~1.8.1",
-    "mocha": "~1.15.1",
-    "grunt-mocha-test": "~0.8.1",
-    "sinon": "~1.7.3",
-    "sinon-chai": "~2.4.0",
-    "express": "~3.4.7"
+    "chai": "^1.8.1",
+    "dox": "^0.4.4",
+    "express": "^3.4.7",
+    "grunt": "^0.4.1",
+    "grunt-cli": "^0.1.9",
+    "grunt-contrib-jade": "^0.8.0",
+    "grunt-contrib-jshint": "^0.7.0",
+    "grunt-contrib-watch": "^0.5.3",
+    "grunt-mocha-test": "^0.8.1",
+    "marked": "^0.2.10",
+    "mocha": "^1.15.1",
+    "sinon": "^1.7.3",
+    "sinon-chai": "^2.4.0",
+    "winston": "^0.9.0"
   },
   "scripts": {
     "test": "./node_modules/.bin/grunt check"

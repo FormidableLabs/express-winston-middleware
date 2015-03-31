@@ -14,9 +14,17 @@ var express = require("express"),
     ]
   };
 
+// Uncaught exception handler.
+process.on("uncaughtException", winMid.uncaught(logOpts, {
+  extra: "uncaught"
+}));
+
 // Middleware automatically adds request logging at finish of request.
 app.use(winMid.request(logOpts, {
   type: "per-request-log"
+}));
+app.use(winMid.error(logOpts, {
+  type: "error-log"
 }));
 
 // In addition to the automatic request logging, can **manually** log within
@@ -26,6 +34,12 @@ app.get("/custom-logging", function (req, res) {
     extra: "metadata"
   });
   res.send("Custom message logged...");
+});
+app.get("/error", function (req, res, next) {
+  next(new Error("Error!"));
+});
+app.get("/uncaught", function () {
+  throw new Error("Uncaught exception!");
 });
 
 // Configure static server.
