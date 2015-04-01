@@ -3,6 +3,8 @@ History
 
 ## Current
 
+* Switch to internal Winston logger. ([@didebeach][])
+  Fixes [#3](https://github.com/FormidableLabs/express-winston-middleware/issues/3).
 * Explicitly delete the request logger.
 
 ## 0.0.4
@@ -25,3 +27,4 @@ History
 * Initial release.
 
 [@ryan-roemer]: https://github.com/ryan-roemer
+[@didebeach]: https://github.com/didebeach

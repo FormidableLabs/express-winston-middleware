@@ -69,9 +69,14 @@ middleware = {
    * @api public
    */
   request: function (opts, baseMeta) {
+    // Stash singleton logger for all requests.
+    var singleton = new winston.Logger(opts);
+
     return function (req, res, next) {
       // Create logger and attach to locals.
-      res.locals._log = new Log(opts, baseMeta);
+      res.locals._log = new Log(_.extend({
+        singleton: singleton
+      }, opts), baseMeta);
       var _end = res.end;
 
       // Add request.
@@ -121,11 +126,13 @@ middleware = {
    * @api public
    */
   error: function (opts, baseMeta) {
+    // Stash singleton logger for all requests.
+    var singleton = new winston.Logger(opts);
     var meta = _.extend({ type: "unhandled_error" }, baseMeta);
 
     return function (err, req, res, next) {
       // Create logger and add objects.
-      (new Log(opts, meta))
+      (new Log(_.extend({ singleton: singleton }, opts), meta))
         .addReq(req)
         .addRes(res)
         .addError(err)
@@ -154,12 +161,14 @@ middleware = {
    * @api public
    */
   uncaught: function (opts, baseMeta) {
-    var meta = _.extend({ type: "uncaught_exception" }, baseMeta);
+    // Stash singleton logger for all requests.
+    var singleton = new winston.Logger(opts);
+    var meta = _.extend({ type: "unhandled_error" }, baseMeta);
 
     return function (err) {
       try {
         // Try real logger.
-        return (new Log(opts, meta))
+        return (new Log(_.extend({ singleton: singleton }, opts), meta))
           .addError(err)
           .error("Uncaught exception");
 
@@ -201,20 +210,23 @@ serverId = workerId ? "w" + workerId : "m";
  * }, { foo: "bar" }));
  * ```
  *
- * @param {Object} opts     Winston logger options.
- * @param {Object} baseMeta Metadata for all log statements.
+ * @param {Object} opts             Winston logger options.
+ * @param {Object} opts.singleton   Optional singleton Winston logger to use.
+ * @param {Object} baseMeta         Metadata for all log statements.
  * @api public
  */
 Log = function (opts, baseMeta) {
+  // Stash self and any singleton designated.
   var self = this;
+  var singleton = (opts || {}).singleton;
 
   // Update options.
   opts = _.extend({
     levels: levels
-  }, opts);
+  }, _.omit(opts, "singleton"));
 
   // Create internal, real Winston logger.
-  this._log = new winston.Logger(opts);
+  this._log = singleton || new winston.Logger(opts);
 
   // Meta for all log statements.
   this._meta = _.merge({
