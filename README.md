@@ -204,7 +204,7 @@ We test all changes with [Travis CI][trav]. Here's our current
 [trav_site]: https://travis-ci.org/FormidableLabs/express-winston-middleware
 
 ## Licenses
-All code is Copyright 2013 Ryan Roemer.
+All code is 2013-2015 Formidable Labs.
 Released under the [MIT](./LICENSE.txt) License.
 
 [winston]: https://github.com/flatiron/winston

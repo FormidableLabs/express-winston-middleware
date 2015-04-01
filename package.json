@@ -33,11 +33,9 @@
     "url": "https://github.com/FormidableLabs/express-winston-middleware"
   },
   "keywords": [
-    "test",
-    "assertion",
-    "assert",
-    "chai",
-    "jquery"
+    "express",
+    "winston",
+    "log"
   ],
   "author": "Ryan Roemer <ryan.roemer@formidablelabs.com>",
   "license": "MIT",
