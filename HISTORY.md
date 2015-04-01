@@ -1,7 +1,7 @@
 History
 =======
 
-## Current
+## 0.0.5
 
 * Switch to internal Winston logger. ([@didebeach][])
   Fixes [#3](https://github.com/FormidableLabs/express-winston-middleware/issues/3).

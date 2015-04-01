@@ -1,6 +1,6 @@
 {
   "name": "express-winston-middleware",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Winston log wrappers for Express.",
   "main": "index.js",
   "dependencies": {
@@ -26,7 +26,7 @@
     "winston": "^0.9.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/grunt check"
+    "test": "grunt check"
   },
   "repository": {
     "type": "git",
