@@ -15,7 +15,6 @@ var os = require("os"),
   url = require("url"),
   _ = require("lodash"),
   winston = require("winston"),
-  levels = winston.config.syslog.levels,
   hostName = os.hostname(),
   workerId,
   serverId,
@@ -85,7 +84,7 @@ middleware = {
       // Proxy end (what connect.logger does) to get status code.
       res.end = function (chunk, encoding) {
         var status = res.statusCode,
-          level = "info";
+          level;
 
         // Unwind and call underlying end.
         res.end = _end;
@@ -94,9 +93,39 @@ middleware = {
         // Allow controllers to wipe out logger.
         if (!res.locals._log) { return; }
 
-        // Adjust level to reflect HTTP status.
-        level = 400 <= status && status < 500 ? "warning" : level;
-        level = 500 <= status                 ? "error"   : level;
+        // Choose a warning and error level.
+        var levels = res.locals._log.levels;
+
+        // Find "lowest" and "highest" numbered levels.
+        // Frustratingly, for `cli`, `npm` low = info, high = error, but
+        // `syslog` is **reversed**. :(
+        var orderedLevels = _(levels)
+          .pairs()
+          .sortBy(function (p) { return p[1]; })
+          .map(function (p) { return p[0]; })
+          .value();
+        var lowLevel = _.first(orderedLevels);
+        var highLevel = _.last(orderedLevels);
+
+        // These _might_ not exist.
+        // Choose in order of preference and be permissive.
+        /*jshint sub:true*/
+        if (400 <= status && status < 500) {
+          // A "Warning".
+          level = level || (levels["warning"] && "warning");
+          level = level || (levels["warn"] && "warn");
+          level = level || highLevel;
+        } else if (500 <= status) {
+          // An "Error"
+          level = level || (levels["error"] && "error");
+          level = level || (levels["crit"] && "crit");
+          level = level || highLevel;
+        } else {
+          // "Info"
+          level = level || (levels["info"] && "info");
+          level = level || lowLevel;
+        }
+        /*jshint sub:false*/
 
         // Add response info and log out.
         res.locals._log.addRes(res);
@@ -221,12 +250,13 @@ Log = function (opts, baseMeta) {
   var singleton = (opts || {}).singleton;
 
   // Update options.
-  opts = _.extend({
-    levels: levels
-  }, _.omit(opts, "singleton"));
+  opts = _.omit(opts, "singleton");
 
   // Create internal, real Winston logger.
   this._log = singleton || new winston.Logger(opts);
+
+  // Expose levels.
+  this.levels = this._log.levels;
 
   // Meta for all log statements.
   this._meta = _.merge({
@@ -239,7 +269,7 @@ Log = function (opts, baseMeta) {
   }, baseMeta);
 
   // Iterate and patch all log levels.
-  _.each(opts.levels, function (num, level) {
+  _.each(this.levels, function (num, level) {
     self[level] = function (msg, metaOrCb, callback) {
       var meta = _.extend({ date: (new Date()).toISOString(), }, this._meta),
         args = [msg, meta];

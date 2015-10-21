@@ -1,6 +1,11 @@
 History
 =======
 
+## 0.0.6
+
+* Permissively infer `error`, `warn|warning` levels for request logger. ([@slooker][])
+  Fixes [#9](https://github.com/FormidableLabs/express-winston-middleware/issues/9).
+
 ## 0.0.5
 
 * Switch to internal Winston logger. ([@didebeach][])
@@ -28,3 +33,4 @@ History
 
 [@ryan-roemer]: https://github.com/ryan-roemer
 [@didebeach]: https://github.com/didebeach
+[@slooker]: https://github.com/slooker

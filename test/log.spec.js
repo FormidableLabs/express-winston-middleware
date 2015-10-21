@@ -50,11 +50,11 @@ describe("Log", function () {
         baz: "fun"
       });
 
-      this.log.warning("msg2", { boo: "time" });
+      this.log.warn("msg2", { boo: "time" });
       call = this.logStub.getCall(1);
 
       expect(this.logStub).to.be.calledTwice;
-      expect(call).to.be.calledWith("warning", "msg2");
+      expect(call).to.be.calledWith("warn", "msg2");
       expect(_.pick(call.args[2], "foo", "boo")).to.eql({
         foo: "bar",
         boo: "time"

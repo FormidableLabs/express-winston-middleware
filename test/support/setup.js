@@ -14,7 +14,7 @@ chai.use(sinonChai);
  *
  * **Note**: https://github.com/flatiron/winston/issues/249 - Winston fixed
  * log level numbers for Syslog per spec, but this reversed the order such
- * that a Console transport at "info" won't get a "warning", but will get
+ * that a Console transport at "info" won't get a "warn", but will get
  * a "debug". We manually reverse the keys here.
  */
 winston.config.syslog.levels = _.chain(winston.config.syslog.levels)
