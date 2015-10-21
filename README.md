@@ -14,6 +14,10 @@ $ npm install express-winston-middleware
 From there, you can create a `Log` instance or use the `request` Express
 middleware.
 
+### Examples
+
+See the [`examples`](./examples) directory for some basic use cases.
+
 ### Logger
 
 The `Log` logger class internally creates and wraps a Winston logger. You
@@ -61,12 +65,12 @@ The `request` middleware is added to your Express setup like:
 ```js
 var express = require("express");
 var app = express(),
-var requestLogger = require("express-winston-middleware").request;
+var winMid = require("express-winston-middleware");
 
 /* ... */
 
 // Same options and meta as for the `Log` class.
-app.use(logging.createMiddle(requestLogger({
+app.use(new winMid.request({
   transports: [
     new (winston.transports.Console)({ json: true })
   ]
