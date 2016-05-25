@@ -337,6 +337,20 @@ Log.prototype.addReq = function (req) {
 };
 
 /**
+ * `Log.transformMeta(fn)`
+ *
+ * Transform meta.
+ *
+ * @param {Function} fn Transform function.
+ * @api public
+ */
+Log.prototype.transformMeta = function (fn) {
+  this._meta = fn(this._meta);
+
+  return this;
+};
+
+/**
  * `Log.addRes(res)`
  *
  * Add response to meta.
