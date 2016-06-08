@@ -1,6 +1,6 @@
 {
   "name": "express-winston-middleware",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "Winston log wrappers for Express.",
   "main": "index.js",
   "dependencies": {
