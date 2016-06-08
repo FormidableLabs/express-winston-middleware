@@ -268,15 +268,23 @@ Log = function (opts, baseMeta) {
     }
   }, baseMeta);
 
+  // Passthrough transform function.
+  this._metaTransformFn = null;
+
   // Iterate and patch all log levels.
   _.each(this.levels, function (num, level) {
     self[level] = function (msg, metaOrCb, callback) {
       var meta = _.extend({ date: (new Date()).toISOString(), }, this._meta),
-        args = [msg, meta];
+        args;
 
       // Extend with user-passed meta, if applicable.
       if (_.isObject(metaOrCb)) {
         _.extend(meta, metaOrCb, {});
+      }
+
+      // Apply final transform, if any.
+      if (self._metaTransformFn) {
+        meta = self._metaTransformFn(_.cloneDeep(meta));
       }
 
       // Infer arguments per Winston calling conventions.
@@ -287,6 +295,10 @@ Log = function (opts, baseMeta) {
       } else if (arguments.length > 2) {
         // In order already.
         args = [msg, meta, callback];
+
+      } else {
+        // No callback.
+        args = [msg, meta];
       }
 
       // Call real logger.
@@ -339,13 +351,22 @@ Log.prototype.addReq = function (req) {
 /**
  * `Log.transformMeta(fn)`
  *
- * Transform meta.
+ * Set a delayed single transform function to mutate a **copy** of the metadata
+ * _right before_ a logging event. You can only presently have **one** such
+ * function. And it is delayed so that for things like request end, you can
+ * effectively access **all** the metadata.
+ *
+ * The transform is applied on each log call and passes a copy of the mutated
+ * metadata to the actual log call.
+ *
+ * The function signature should be `fn(existingMeta)` and return mutated
+ * metadata.
  *
  * @param {Function} fn Transform function.
  * @api public
  */
 Log.prototype.transformMeta = function (fn) {
-  this._meta = fn(this._meta);
+  this._metaTransformFn = fn;
 
   return this;
 };

@@ -66,6 +66,10 @@ describe("Log", function () {
     it("should add tests here"); // TODO
   });
 
+  describe("#transformMeta", function () {
+    it("should add tests here"); // TODO
+  });
+
   describe("#addReq", function () {
     it("should add tests here"); // TODO
   });

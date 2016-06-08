@@ -1,6 +1,10 @@
 History
 =======
 
+## 0.1.0
+
+* Add `transformMeta()` function. ([@zianwar][])
+
 ## 0.0.6
 
 * Permissively infer `error`, `warn|warning` levels for request logger. ([@slooker][])
@@ -34,3 +38,4 @@ History
 [@ryan-roemer]: https://github.com/ryan-roemer
 [@didebeach]: https://github.com/didebeach
 [@slooker]: https://github.com/slooker
+[@zianwar]: https://github.com/zianwar

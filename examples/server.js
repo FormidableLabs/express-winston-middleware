@@ -35,6 +35,33 @@ app.get("/custom-logging", function (req, res) {
   });
   res.send("Custom message logged...");
 });
+app.get("/add-meta", function (req, res) {
+  res.locals._log
+    .addMeta({
+      extra: "addMeta-meta"
+    })
+    .info("This is the per-request logger object!");
+
+  res.send("Custom add-meta logged...");
+});
+app.get("/transform-meta", function (req, res) {
+  var log = res.locals._log
+    .transformMeta(function (meta) {
+      return {
+        oldReq: meta.req,
+        totallyNew: "totally new stuff"
+      };
+    });
+
+  log.info("This is the per-request logger object!");
+  log.warn("This is extra custom log with callback", function () {
+    // Do a console log so we don't have our logger everywhere...
+    console.log("CONSOLE: CALLED BACK");
+  });
+
+  res.send("Custom transform-meta logged...");
+});
+
 app.get("/error", function (req, res, next) {
   next(new Error("Error!"));
 });

@@ -120,6 +120,7 @@ current request metadata. E.g.:</p>
 <li><a href="#-log-opts-basemeta-logger-class-"><code>Log(opts, baseMeta)</code> - Logger class.</a></li>
 <li><a href="#-log-addmeta-meta-"><code>Log.addMeta(meta)</code></a></li>
 <li><a href="#-log-addreq-req-"><code>Log.addReq(req)</code></a></li>
+<li><a href="#-log-transformmeta-fn-"><code>Log.transformMeta(fn)</code></a></li>
 <li><a href="#-log-addres-res-"><code>Log.addRes(res)</code></a></li>
 <li><a href="#-log-adderror-err-"><code>Log.addError(err)</code></a></li>
 </ul>
@@ -151,6 +152,15 @@ the end of the request.</p>
 <p>Add arbitrary meta to all subsequent log statements.</p>
 <h3 id="-log-addreq-req-"><code>Log.addReq(req)</code></h3>
 <p>Add request to meta.</p>
+<h3 id="-log-transformmeta-fn-"><code>Log.transformMeta(fn)</code></h3>
+<p>Set a delayed single transform function to mutate a <strong>copy</strong> of the metadata
+<em>right before</em> a logging event. You can only presently have <strong>one</strong> such
+function. And it is delayed so that for things like request end, you can
+effectively access <strong>all</strong> the metadata.</p>
+<p>The transform is applied on each log call and passes a copy of the mutated
+metadata to the actual log call.</p>
+<p>The function signature should be <code>fn(existingMeta)</code> and return mutated
+metadata.</p>
 <h3 id="-log-addres-res-"><code>Log.addRes(res)</code></h3>
 <p>Add response to meta.</p>
 <h3 id="-log-adderror-err-"><code>Log.addError(err)</code></h3>
@@ -162,11 +172,15 @@ with the plugin.</p>
 <a href="https://travis-ci.org/FormidableLabs/express-winston-middleware">build status</a>:</p>
 <p><a href="https://travis-ci.org/FormidableLabs/express-winston-middleware"><img src="https://api.travis-ci.org/FormidableLabs/express-winston-middleware.png" alt="Build Status"></a></p>
 <h2 id="licenses">Licenses</h2>
-<p>All code is 2013-2015 Formidable Labs.
+<p>All code is 2013-2016 Formidable Labs.
 Released under the <a href="./LICENSE.txt">MIT</a> License.</p>
 
         </div>
         <div id="history"><h1 id="history">History</h1>
+<h2 id="0-1-0">0.1.0</h2>
+<ul>
+<li>Add <code>transformMeta()</code> function. (<a href="https://github.com/zianwar">@zianwar</a>)</li>
+</ul>
 <h2 id="0-0-6">0.0.6</h2>
 <ul>
 <li>Permissively infer <code>error</code>, <code>warn|warning</code> levels for request logger. (<a href="https://github.com/slooker">@slooker</a>)

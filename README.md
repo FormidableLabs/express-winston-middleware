@@ -128,6 +128,7 @@ app.get("/foo", function (req, res) {
 * [`Log(opts, baseMeta)` - Logger class.](#-log-opts-basemeta-logger-class-)
 * [`Log.addMeta(meta)`](#-log-addmeta-meta-)
 * [`Log.addReq(req)`](#-log-addreq-req-)
+* [`Log.transformMeta(fn)`](#-log-transformmeta-fn-)
 * [`Log.addRes(res)`](#-log-addres-res-)
 * [`Log.addError(err)`](#-log-adderror-err-)
 
@@ -185,6 +186,19 @@ Add arbitrary meta to all subsequent log statements.
 
 Add request to meta.
 
+### `Log.transformMeta(fn)`
+
+Set a delayed single transform function to mutate a **copy** of the metadata
+_right before_ a logging event. You can only presently have **one** such
+function. And it is delayed so that for things like request end, you can
+effectively access **all** the metadata.
+
+The transform is applied on each log call and passes a copy of the mutated
+metadata to the actual log call.
+
+The function signature should be `fn(existingMeta)` and return mutated
+metadata.
+
 ### `Log.addRes(res)`
 
 Add response to meta.
@@ -208,7 +222,7 @@ We test all changes with [Travis CI][trav]. Here's our current
 [trav_site]: https://travis-ci.org/FormidableLabs/express-winston-middleware
 
 ## Licenses
-All code is 2013-2015 Formidable Labs.
+All code is 2013-2016 Formidable Labs.
 Released under the [MIT](./LICENSE.txt) License.
 
 [winston]: https://github.com/flatiron/winston
